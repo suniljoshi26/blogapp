@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,6 +13,7 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Single from "./pages/Single";
 import Write from "./pages/Write";
+import "./style.scss";
 const Layout = () => {
   return (
     <>
@@ -52,8 +54,10 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <div className="App">
-      <RouterProvider router={router} />
+    <div className="app">
+      <div className="contaner">
+        <RouterProvider router={router} />
+      </div>
     </div>
   );
 }
