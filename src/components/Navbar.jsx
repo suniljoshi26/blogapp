@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../logo/logo.png";
 const Navbar = () => {
   return (
     <div className="navbar">
       {" "}
       <div className="container">
         <div className="logo">
-          {" "}
-          <h6>logo </h6>
+          <img src={logo} height={80} />
         </div>
 
         <div className="links">

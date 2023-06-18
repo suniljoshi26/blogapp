@@ -57,7 +57,9 @@ $lightGreen: #b9e7e7;
         align-items: center;
         justify-content: space-between;
         .logo {
-          font-size: 30px;
+          img {
+            width: 120px;
+          }
         }
         .links {
           display: flex;
