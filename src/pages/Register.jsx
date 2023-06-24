@@ -12,16 +12,24 @@ const Register = () => {
   };
   console.log(inputs);
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/register",
-        inputs
-      );
-      console.log(res);
-    } catch (err) {
-      console.log(err);
+      const response = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (error) {
+      console.error("Error:", error);
     }
+
+    // console.log("e", ee);
   };
   return (
     <div className="auth">
