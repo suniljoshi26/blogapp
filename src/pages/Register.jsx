@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -7,6 +7,8 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -15,21 +17,29 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/api/auth/register", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputs),
-      });
+      const res = await axios.post(
+        "http://localhost:8000/api/auth/register",
+        inputs
+      );
 
-      const result = await response.json();
-      console.log("Success:", result);
-    } catch (error) {
-      console.error("Error:", error);
+      // const response = await fetch("http://localhost:8000/api/auth/register", {
+      //   method: "POST", // or 'PUT'
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(inputs),
+      // });
+
+      // const result = await response.json();
+      // //  navigate("/login");
+      // console.log("Success:", result);
+      // setError(result);
+      navigate("/login");
+    } catch (err) {
+      setError(err.response.data);
+
+      // console.log("e", error);
     }
-
-    // console.log("e", ee);
   };
   return (
     <div className="auth">
@@ -58,7 +68,7 @@ const Register = () => {
           onChange={handleChange}
         />
         <button onClick={handleSubmit}>Register</button>
-        <p> This is an error</p>
+        {error && <p> {error}</p>}
         <span>
           Do you have an account?<Link to="/login">Login</Link>
         </span>
