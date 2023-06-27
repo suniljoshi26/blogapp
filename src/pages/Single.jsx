@@ -1,65 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Menu from "../components/Menu";
+import axios from "axios";
+import moment from "moment";
+import { AuthContext } from "../context/authContext";
 
 const Single = () => {
+  const [post, setPost] = useState([]);
+  const location = useLocation();
+
+  const handleClick = () => {};
+  const postId = location.pathname.split("/")[2];
+  console.log("postId", postId);
+  const { currentUser } = useContext(AuthContext);
+  console.log(post);
+  useEffect(() => {
+    const fatchData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/posts/${postId}`
+        );
+        setPost(res.data);
+        // console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fatchData();
+  }, [postId]);
   return (
     <div className="single">
       <div className="content">
         {" "}
-        <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+        <img src={post.img} />
         <div className="user">
           <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
 
           <div className="info">
-            <span>Sunil</span>
-            <p> Posted 2 days ago</p>
+            <span>{post.username}</span>
+            <p> Posted {moment(post.date).fromNow()}</p>
           </div>
-          <div className="edit">
-            <Link to={`write?edit=2`}>
+          {currentUser.username === post.username && (
+            <div className="edit">
+              <Link to={`write?edit=2`}>
+                <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+              </Link>
               <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-            </Link>
-            <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-          </div>
+
+              <img
+                onClick={handleClick}
+                src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              />
+            </div>
+          )}
         </div>
-        <h1>
-          {" "}
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.
-        </h1>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
-        </p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
-        </p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
-        </p>
+        <h1>{post.title}</h1>
+        <p>{post.des}</p>
       </div>
       <div className="menu">
         <Menu />
