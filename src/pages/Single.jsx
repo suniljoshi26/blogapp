@@ -4,6 +4,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 const Single = () => {
   const [post, setPost] = useState([]);
@@ -39,19 +40,21 @@ const Single = () => {
             <span>{post.username}</span>
             <p> Posted {moment(post.date).fromNow()}</p>
           </div>
-          {currentUser.username === post.username && (
-            <div className="edit">
-              <Link to={`write?edit=2`}>
-                <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
-              </Link>
-              <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
+          {/* {currentUser.username === post.username && ( */}
+          <div className="edit">
+            <Link to={`/write?edit=2`} state={post}>
+              <AiOutlineEdit />
+              {/* <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
+            </Link>
+            {/* <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
 
-              <img
-                onClick={handleClick}
+            <AiOutlineDelete onClick={handleClick} />
+            {/* <img
+                
                 src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              />
-            </div>
-          )}
+              /> */}
+          </div>
+          {/* )} */}
         </div>
         <h1>{post.title}</h1>
         <p>{post.des}</p>
