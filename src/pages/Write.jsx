@@ -1,17 +1,36 @@
+import axios from "axios";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useLocation } from "react-router-dom";
 
 const Write = () => {
-  const [value, setValue] = useState("");
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState(null);
-  const [cat, setCat] = useState("");
-  const [file, setFile] = useState("");
+  const state = useLocation().state;
+  const [value, setValue] = useState(state?.desc || "");
+  const [title, setTitle] = useState(state?.title || "");
+  // const [img, setImg] = useState(null);
+  const [cat, setCat] = useState(state?.cat || "");
+  const [file, setFile] = useState(null);
   console.log(value);
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
 
+      const res = await axios.post(
+        "http://localhost:8000/api/upload",
+        formData
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const imgUrl = upload();
+    try {
+    } catch (error) {}
   };
 
   return (
@@ -20,6 +39,7 @@ const Write = () => {
         <input
           type="text"
           placeholder="Title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="editorContainer">
@@ -57,6 +77,7 @@ const Write = () => {
               name="cat"
               value="art"
               id="art"
+              chacked={cat === "art"}
               onChange={(e) => setCat(e.target.value)}
             />
 
@@ -68,6 +89,7 @@ const Write = () => {
               name="cat"
               value="science"
               id="science"
+              chacked={cat === "science"}
               onChange={(e) => setCat(e.target.value)}
             />
             <label htmlFor="science">Science</label>
@@ -79,6 +101,7 @@ const Write = () => {
               name="cat"
               value="technology"
               id="technology"
+              chacked={cat === "technology"}
               onChange={(e) => setCat(e.target.value)}
             />
             <label htmlFor="technology">Technology</label>
@@ -90,6 +113,7 @@ const Write = () => {
               name="cat"
               value="cinema"
               id="cinema"
+              chacked={cat === "cinema"}
               onChange={(e) => setCat(e.target.value)}
             />
             <label htmlFor="cinema">Cinema</label>
@@ -101,6 +125,7 @@ const Write = () => {
               name="cat"
               value="desing"
               id="desing"
+              chacked={cat === "desing"}
               onChange={(e) => setCat(e.target.value)}
             />
             <label htmlFor="desing">Desing</label>
@@ -111,6 +136,7 @@ const Write = () => {
               name="cat"
               value="food"
               id="food"
+              chacked={cat === "food"}
               onChange={(e) => setCat(e.target.value)}
             />
             <label htmlFor="food">Food</label>
